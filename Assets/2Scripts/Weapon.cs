@@ -19,6 +19,7 @@ public class Weapon : MonoBehaviour
     public Transform bulletCasePos;
     public GameObject bulletCase;
 
+
     public void Use()
     {
         if(type == Type.Melee)
@@ -31,6 +32,7 @@ public class Weapon : MonoBehaviour
             curAmmo--;
             StartCoroutine("Shot");
         }
+
     }
 
     IEnumerator Swing()

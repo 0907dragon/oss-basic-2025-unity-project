@@ -10,8 +10,11 @@ public class Player : MonoBehaviour
     public bool[] hasWeapons;
     public GameObject[] grenades;
     public int hasGrenades;
+<<<<<<< HEAD
     public GameObject grenadeObj;
     public Camera followCamera;
+=======
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
 
     public int ammo;
     public int coin;
@@ -27,8 +30,11 @@ public class Player : MonoBehaviour
     bool wDown;
     bool jDown;
     bool fDown;
+<<<<<<< HEAD
     bool gDown;
     bool rDown;
+=======
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
     bool iDown;
     bool sDown1;
     bool sDown2;
@@ -37,16 +43,23 @@ public class Player : MonoBehaviour
     bool isJump;
     bool isDodge;
     bool isSwap;
+<<<<<<< HEAD
     bool isReload;
     bool isFireReady = true;
     bool isBorder;
     bool isDamage;
+=======
+    bool isFireReady = true;
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
 
     Vector3 moveVec;
     Vector3 dodgeVec;
     Rigidbody rigid;
     Animator anim;
+<<<<<<< HEAD
     MeshRenderer[] meshs;
+=======
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
 
     GameObject nearObject;
     Weapon equipWeapon;
@@ -57,7 +70,10 @@ public class Player : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
+<<<<<<< HEAD
         meshs = GetComponentsInChildren<MeshRenderer>();
+=======
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
     }
 
     void Update()
@@ -66,12 +82,18 @@ public class Player : MonoBehaviour
         Move();
         Turn();
         Jump();
+<<<<<<< HEAD
         Grenade();
+=======
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
         Dodge();
         Swap();
         Interaction();
         Attack();
+<<<<<<< HEAD
         Reload();
+=======
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
     }   
 
     void GetInput()
@@ -81,8 +103,11 @@ public class Player : MonoBehaviour
         wDown = Input.GetButton("Walk");
         jDown = Input.GetButton("Jump");
         fDown = Input.GetButton("Fire1");
+<<<<<<< HEAD
         gDown = Input.GetButtonDown("Fire2");
         rDown = Input.GetButton("Reload");
+=======
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
         iDown = Input.GetButton("Interaction");
         sDown1 = Input.GetButton("Swap1");
         sDown2 = Input.GetButton("Swap2");
@@ -96,11 +121,18 @@ public class Player : MonoBehaviour
         if (isDodge)
             moveVec = dodgeVec;
 
+<<<<<<< HEAD
         if (isSwap || isReload || !isFireReady)
             moveVec = Vector3.zero;
 
         if(!isBorder)
             transform.position += moveVec * speed * (wDown ? 0.3f : 1f) * Time.deltaTime;
+=======
+        if (isSwap || !isFireReady)
+            moveVec = Vector3.zero;
+
+        transform.position += moveVec * speed * (wDown ? 0.3f : 1f) * Time.deltaTime;
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
 
         anim.SetBool("isRun", moveVec != Vector3.zero);
         anim.SetBool("isWalk", wDown);
@@ -108,6 +140,7 @@ public class Player : MonoBehaviour
 
     void Turn()
     {
+<<<<<<< HEAD
         //#1. Ű���忡 ���� ȸ��
         transform.LookAt(transform.position + moveVec);
 
@@ -123,6 +156,9 @@ public class Player : MonoBehaviour
                 transform.LookAt(transform.position + nextVec);
             }
         }
+=======
+        transform.LookAt(transform.position + moveVec);
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
     }
 
     void Jump()
@@ -136,6 +172,7 @@ public class Player : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
     void Grenade()
     {
         if (hasGrenades == 0)
@@ -162,6 +199,8 @@ public class Player : MonoBehaviour
         }
     }
 
+=======
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
     void Attack()
     {
         if (equipWeapon == null)
@@ -173,11 +212,16 @@ public class Player : MonoBehaviour
         if(fDown && isFireReady && !isDodge && !isSwap)
         {
             equipWeapon.Use();
+<<<<<<< HEAD
             anim.SetTrigger(equipWeapon.type == Weapon.Type.Melee ? "doSwing" : "doShot");
+=======
+            anim.SetTrigger("doSwing");
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
             fireDelay = 0;
         }
     }
 
+<<<<<<< HEAD
     void Reload()
     {
         if(equipWeapon == null) 
@@ -210,6 +254,8 @@ public class Player : MonoBehaviour
         isReload = false;
     }
 
+=======
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
     void Dodge()
     {
         if (jDown && moveVec != Vector3.zero && !isJump && !isDodge && !isSwap)
@@ -275,11 +321,15 @@ public class Player : MonoBehaviour
                 hasWeapons[weaponIndex] = true;
 
                 Destroy(nearObject);
+<<<<<<< HEAD
                 nearObject = null;
+=======
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
             }
         }
     }
 
+<<<<<<< HEAD
     void FreezeRotation()
     {
         rigid.angularVelocity = Vector3.zero;
@@ -297,6 +347,8 @@ public class Player : MonoBehaviour
         StopToWall();
     }
 
+=======
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
     void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Floor")
@@ -337,6 +389,7 @@ public class Player : MonoBehaviour
             }
             Destroy(other.gameObject);
         }
+<<<<<<< HEAD
         else if (other.tag == "EnemyBullet")
         {
             if(!isDamage)
@@ -376,15 +429,23 @@ public class Player : MonoBehaviour
         {
             rigid.linearVelocity = Vector3.zero;
         }
+=======
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
     }
 
     void OnTriggerStay(Collider other)
     {
         if (other.tag == "Weapon")
+<<<<<<< HEAD
         {
             nearObject = other.gameObject;
             Debug.Log(nearObject.name);
         }
+=======
+            nearObject = other.gameObject;
+
+        Debug.Log(nearObject.name);
+>>>>>>> 93554f62c84c2726a1929ce41cdca091357171ef
     }
 
     void OnTriggerExit(Collider other)
