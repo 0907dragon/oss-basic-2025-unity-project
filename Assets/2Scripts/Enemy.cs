@@ -9,9 +9,12 @@ public class Enemy : MonoBehaviour
     public Type enemyType;
     public int maxHealth;
     public int curHealth;
+    public int score;
+    public GameManager manager;
     public Transform Target;
     public BoxCollider meleeArea;
     public GameObject bullet;
+    public GameObject[] coins;
     public bool isChase;
     public bool isAttack;
     public bool isDead;
@@ -30,7 +33,7 @@ public class Enemy : MonoBehaviour
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
 
-        if(enemyType != Type.D)
+        if (enemyType != Type.D)
             Invoke("ChaseStart", 2);
     }
 
@@ -42,24 +45,21 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if(nav.enabled && enemyType != Type.D)
+        if (nav.enabled && enemyType != Type.D)
         {
             nav.SetDestination(Target.position);
             nav.isStopped = !isChase;
         }
-        
+
     }
-
-
 
     void FreezeVelocity()
     {
-        if(isChase)
+        if (isChase)
         {
-            rigid.linearVelocity = Vector3.zero;
+            rigid.linearVelocity = Vector3.zero;          // ������
             rigid.angularVelocity = Vector3.zero;
         }
-        
     }
 
     void Targerting()
@@ -95,7 +95,7 @@ public class Enemy : MonoBehaviour
                 StartCoroutine(Attack());
             }
         }
-        
+
     }
 
     IEnumerator Attack()
@@ -104,42 +104,40 @@ public class Enemy : MonoBehaviour
         isAttack = true;
         anim.SetBool("isAttack", true);
 
-            switch (enemyType)
-            {
-                case Type.A:
-                    yield return new WaitForSeconds(0.2f);
-                    meleeArea.enabled = true;
+        switch (enemyType)
+        {
+            case Type.A:
+                yield return new WaitForSeconds(0.2f);
+                meleeArea.enabled = true;
 
-                    yield return new WaitForSeconds(1f);
-                    meleeArea.enabled = false;
+                yield return new WaitForSeconds(1f);
+                meleeArea.enabled = false;
 
-                    yield return new WaitForSeconds(1f);
-                    break;
+                yield return new WaitForSeconds(1f);
+                break;
 
-                case Type.B:
-                    yield return new WaitForSeconds(0.1f);
-                    rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
-                    meleeArea.enabled = true;
+            case Type.B:
+                yield return new WaitForSeconds(0.1f);
+                rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
+                meleeArea.enabled = true;
 
-                    yield return new WaitForSeconds(0.5f);
-                    rigid.linearVelocity = Vector3.zero;
-                    meleeArea.enabled = false;
+                yield return new WaitForSeconds(0.5f);
+                rigid.linearVelocity = Vector3.zero;      // ������
+                meleeArea.enabled = false;
 
-                    yield return new WaitForSeconds(2f);
-                    break;
+                yield return new WaitForSeconds(2f);
+                break;
 
-                case Type.C:
-                    yield return new WaitForSeconds(0.5f);
-                    GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);
-                    Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
-                    rigidBullet.linearVelocity = transform.forward * 20;
+            case Type.C:
+                yield return new WaitForSeconds(0.5f);
+                GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);
+                Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
+                rigidBullet.linearVelocity = transform.forward * 20;   // ������
 
-                    yield return new WaitForSeconds(2f);  
-                    break;
-            }
+                yield return new WaitForSeconds(2f);
+                break;
+        }
 
-
-        
         isChase = true;
         isAttack = false;
         anim.SetBool("isAttack", false);
@@ -154,7 +152,7 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Melee")
+        if (other.tag == "Melee")
         {
             Weapon weapon = other.GetComponent<Weapon>();
             curHealth -= weapon.damage;
@@ -185,7 +183,7 @@ public class Enemy : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        if(curHealth > 0)
+        if (curHealth > 0)
         {
             foreach (MeshRenderer mesh in meshs)
                 mesh.material.color = Color.white;
@@ -201,12 +199,35 @@ public class Enemy : MonoBehaviour
             nav.enabled = false;
             anim.SetTrigger("doDie");
 
+            Player player = Target.GetComponent<Player>();    // ������
+            player.score += score;
+
+            int ranCoin = Random.Range(0, 3);
+            Instantiate(coins[ranCoin], transform.position, Quaternion.identity);
+
+
+            switch (enemyType)
+            {
+                case Type.A:
+                    manager.enemyCntA--;
+                    break;
+                case Type.B:
+                    manager.enemyCntB--;
+                    break;
+                case Type.C:
+                    manager.enemyCntC--;
+                    break;
+                case Type.D:
+                    manager.enemyCntD--;
+                    break;
+            }
+
             if (isGrenade)
             {
                 reactVec = reactVec.normalized;
                 reactVec += Vector3.up * 3;
 
-                rigid.freezeRotation = false;
+                rigid.constraints = RigidbodyConstraints.None;   // ������
                 rigid.AddForce(reactVec * 5, ForceMode.Impulse);
                 rigid.AddTorque(reactVec * 15, ForceMode.Impulse);
             }
@@ -217,9 +238,7 @@ public class Enemy : MonoBehaviour
                 rigid.AddForce(reactVec * 5, ForceMode.Impulse);
             }
 
-            if (enemyType != Type.D)
-                Destroy(gameObject, 4);
+            Destroy(gameObject, 4);
         }
-
     }
 }
