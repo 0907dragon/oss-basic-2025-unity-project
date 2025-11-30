@@ -241,4 +241,32 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject, 4);
         }
     }
+
+    // Enemy가 활성화될 때 EnemyManager에 등록
+    private void OnEnable()
+    {
+        if (EnemyManager.Instance != null)
+        {
+            EnemyManager.Instance.RegisterEnemy(transform);
+        }
+    }
+
+    // 비활성화되면 해제
+    private void OnDisable()
+    {
+        if (EnemyManager.Instance != null)
+        {
+            EnemyManager.Instance.UnregisterEnemy(transform);
+        }
+    }
+
+    // 파괴될 때도 한 번 더 안전하게 해제
+    private void OnDestroy()
+    {
+        if (EnemyManager.Instance != null)
+        {
+            EnemyManager.Instance.UnregisterEnemy(transform);
+        }
+    }
+
 }
