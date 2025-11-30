@@ -21419,6 +21419,51 @@ Transform:
   - {fileID: 845787676}
   m_Father: {fileID: 188588238}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1061033051
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1061033053}
+  - component: {fileID: 1061033052}
+  m_Layer: 13
+  m_Name: EnemyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1061033052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1061033051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55eb98b1f5088094ab8cd50438ce3a6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
+  enemies: []
+--- !u!4 &1061033053
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1061033051}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -6.89106, y: 6.40241, z: -6.71635}
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1073140046
 GameObject:
   m_ObjectHideFlags: 0
@@ -21490,7 +21535,7 @@ MonoBehaviour:
   enemyList: 
   menupanel: {fileID: 1683529794}
   gamepanel: {fileID: 1478216561}
-  overPanel: {fileID: 0}
+  overPanel: {fileID: 2127590906}
   maxScoreTxt: {fileID: 1739182563}
   scoreTxt: {fileID: 91384898}
   stageTxt: {fileID: 820931321}
@@ -66812,6 +66857,7 @@ GameObject:
   - component: {fileID: 2127883328}
   - component: {fileID: 2127883327}
   - component: {fileID: 2127883326}
+  - component: {fileID: 2127883330}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -66904,6 +66950,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &2127883330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127883325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 820f92a57d64c8340b938519d3c69f6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OffscreenIndicatorManager
+  mainCamera: {fileID: 330585545}
+  player: {fileID: 249385776}
+  canvasRect: {fileID: 2127883329}
+  indicatorPrefab: {fileID: 8016528839157243249, guid: fd036bb567f6fb84b864f92606bc7d7e, type: 3}
+  edgePadding: 50
 --- !u!4 &2146534648 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 883724508928496280, guid: 8f5e135a19626f544908fc8f156144b9, type: 3}
@@ -67542,5 +67605,6 @@ SceneRoots:
   - {fileID: 283429306}
   - {fileID: 1495557167}
   - {fileID: 1866665897}
+  - {fileID: 1061033053}
   - {fileID: 2127883329}
   - {fileID: 1772558387}
