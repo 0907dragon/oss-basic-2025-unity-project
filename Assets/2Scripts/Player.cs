@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -14,8 +13,6 @@ public class Player : MonoBehaviour
     public GameObject grenadeObj;
     public Camera followCamera;
     public GameManager manager;
-
-    public AudioSource jumpSound;
 
     public int ammo;
     public int coin;
@@ -59,15 +56,33 @@ public class Player : MonoBehaviour
     int equipWeaponIndex = -1;
     float fireDelay;
 
+    // =======================
+    //        SOUND AREA
+    // =======================
+    public AudioClip jumpClip;         // jump.wav
+    public AudioClip dodgeClip;        // airpunch.wav
+    public AudioClip hitClip;          // Damage.wav
+    public AudioClip weaponSwapClip;   // weaponswap.wav
+    public AudioClip footstepClip;     // footsteps.wav
+
+    private AudioSource audioSource;   // 메인
+    private AudioSource footstepSource; // 발자국 전용
+
+
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
         meshs = GetComponentsInChildren<MeshRenderer>();
-        
-        Debug.Log(PlayerPrefs.GetInt("MaxScore"));
 
-        //PlayerPrefs.SetInt("MaxScore", 112500);
+        // 메인 사운드 AudioSource
+        audioSource = GetComponent<AudioSource>();
+
+        // 발자국 전용 AudioSource 생성
+        footstepSource = gameObject.AddComponent<AudioSource>();
+        footstepSource.loop = true;
+        footstepSource.playOnAwake = false;
+        footstepSource.volume = 0.4f;
     }
 
     void Update()
@@ -82,7 +97,7 @@ public class Player : MonoBehaviour
         Interaction();
         Attack();
         Reload();
-    }   
+    }
 
     void GetInput()
     {
@@ -109,19 +124,34 @@ public class Player : MonoBehaviour
         if (isSwap || isReload || !isFireReady || isDead)
             moveVec = Vector3.zero;
 
-        if(!isBorder)
+        if (!isBorder)
             transform.position += moveVec * speed * (wDown ? 0.3f : 1f) * Time.deltaTime;
 
         anim.SetBool("isRun", moveVec != Vector3.zero);
         anim.SetBool("isWalk", wDown);
+
+        // ========================
+        // FOOTSTEP SOUND
+        // ========================
+        if (moveVec != Vector3.zero && !isJump && !isDodge && !isSwap && !isDead)
+        {
+            if (!footstepSource.isPlaying)
+            {
+                footstepSource.clip = footstepClip;
+                footstepSource.Play();
+            }
+        }
+        else
+        {
+            if (footstepSource.isPlaying)
+                footstepSource.Stop();
+        }
     }
 
     void Turn()
     {
-       
         transform.LookAt(transform.position + moveVec);
 
-        
         if (fDown && !isDead)
         {
             Ray ray = followCamera.ScreenPointToRay(Input.mousePosition);
@@ -144,7 +174,8 @@ public class Player : MonoBehaviour
             anim.SetTrigger("doJump");
             isJump = true;
 
-            jumpSound.Play();
+            // JUMP SOUND
+            audioSource.PlayOneShot(jumpClip);
         }
     }
 
@@ -182,7 +213,7 @@ public class Player : MonoBehaviour
         fireDelay += Time.deltaTime;
         isFireReady = equipWeapon.rate < fireDelay;
 
-        if(fDown && isFireReady && !isDodge && !isSwap && !isShop && !isDead)
+        if (fDown && isFireReady && !isDodge && !isSwap && !isShop && !isDead)
         {
             equipWeapon.Use();
             anim.SetTrigger(equipWeapon.type == Weapon.Type.Melee ? "doSwing" : "doShot");
@@ -192,7 +223,7 @@ public class Player : MonoBehaviour
 
     void Reload()
     {
-        if(equipWeapon == null) 
+        if (equipWeapon == null)
             return;
 
         if (equipWeapon.type == Weapon.Type.Melee)
@@ -201,7 +232,7 @@ public class Player : MonoBehaviour
         if (ammo == 0)
             return;
 
-        if (equipWeapon.curAmmo == equipWeapon.maxAmmo) 
+        if (equipWeapon.curAmmo == equipWeapon.maxAmmo)
             return;
 
         if (rDown && !isJump && !isDodge && !isSwap && isFireReady && !isShop && !isDead)
@@ -231,7 +262,10 @@ public class Player : MonoBehaviour
             anim.SetTrigger("doDodge");
             isDodge = true;
 
-            Invoke("DodgeOut", 0.5f); 
+            // DODGE SOUND
+            audioSource.PlayOneShot(dodgeClip);
+
+            Invoke("DodgeOut", 0.5f);
         }
     }
     void DodgeOut()
@@ -254,17 +288,19 @@ public class Player : MonoBehaviour
         if (sDown2) weaponIndex = 1;
         if (sDown3) weaponIndex = 2;
 
-        if((sDown1 || sDown2 || sDown3) && !isJump && !isDodge && !isShop && !isDead)
+        if ((sDown1 || sDown2 || sDown3) && !isJump && !isDodge && !isShop && !isDead)
         {
-            if(equipWeapon != null)
+            if (equipWeapon != null)
                 equipWeapon.gameObject.SetActive(false);
 
             equipWeaponIndex = weaponIndex;
             equipWeapon = weapons[weaponIndex].GetComponent<Weapon>();
             equipWeapon.gameObject.SetActive(true);
 
-            anim.SetTrigger("doSwap");
+            // SWAP SOUND
+            audioSource.PlayOneShot(weaponSwapClip);
 
+            anim.SetTrigger("doSwap");
             isSwap = true;
 
             Invoke("SwapOut", 0.4f);
@@ -273,29 +309,27 @@ public class Player : MonoBehaviour
 
     void SwapOut()
     {
-        isSwap = false; 
+        isSwap = false;
     }
 
     void Interaction()
     {
-        if(iDown && nearObject != null && !isJump && !isDodge && !isShop && !isDead)
+        if (iDown && nearObject != null && !isJump && !isDodge && !isShop && !isDead)
         {
-            if(nearObject.tag == "Weapon")
+            if (nearObject.tag == "Weapon")
             {
                 Item item = nearObject.GetComponent<Item>();
                 int weaponIndex = item.value;
                 hasWeapons[weaponIndex] = true;
 
                 Destroy(nearObject);
-                
             }
-            else if(nearObject.tag == "Shop"){
+            else if (nearObject.tag == "Shop")
+            {
                 Shop shop = nearObject.GetComponent<Shop>();
                 shop.Enter(this);
                 isShop = true;
-
-
-                }
+            }
         }
     }
 
@@ -318,7 +352,7 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Floor")
+        if (collision.gameObject.tag == "Floor")
         {
             anim.SetBool("isJump", false);
             isJump = false;
@@ -327,7 +361,7 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Item")
+        if (other.tag == "Item")
         {
             Item item = other.GetComponent<Item>();
             switch (item.type)
@@ -339,7 +373,7 @@ public class Player : MonoBehaviour
                     break;
                 case Item.Type.Coin:
                     coin += item.value;
-                    if (coin > maxCoin) 
+                    if (coin > maxCoin)
                         coin = maxCoin;
                     break;
                 case Item.Type.Heart:
@@ -358,12 +392,16 @@ public class Player : MonoBehaviour
         }
         else if (other.tag == "EnemyBullet")
         {
-            if(!isDamage)
+            if (!isDamage)
             {
                 Bullet enemyBullet = other.GetComponent<Bullet>();
                 health -= enemyBullet.damage;
 
                 bool isBossAtk = other.name == "Boss Melee Area";
+
+                // HIT SOUND
+                audioSource.PlayOneShot(hitClip);
+
                 StartCoroutine(OnDamage(isBossAtk));
             }
             if (other.GetComponent<Rigidbody>() != null)
@@ -374,28 +412,23 @@ public class Player : MonoBehaviour
     IEnumerator OnDamage(bool isBossAtk)
     {
         isDamage = true;
-        foreach(MeshRenderer mesh in meshs)
-        {
+        foreach (MeshRenderer mesh in meshs)
             mesh.material.color = Color.yellow;
-        }
+
         if (isBossAtk)
             rigid.AddForce(transform.forward * -25, ForceMode.Impulse);
-        
-        if (health <= 0 && !isDead)
 
+        if (health <= 0 && !isDead)
             OnDie();
 
         yield return new WaitForSeconds(1f);
 
         isDamage = false;
         foreach (MeshRenderer mesh in meshs)
-        {
             mesh.material.color = Color.white;
-        }
 
         if (isBossAtk)
             rigid.linearVelocity = Vector3.zero;
-        
     }
 
     void OnDie()
@@ -408,10 +441,7 @@ public class Player : MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         if (other.tag == "Weapon" || other.tag == "Shop")
-        {
             nearObject = other.gameObject;
-            Debug.Log(nearObject.name);
-        }
     }
 
     void OnTriggerExit(Collider other)
@@ -424,8 +454,6 @@ public class Player : MonoBehaviour
             shop.Exit();
             isShop = false;
             nearObject = null;
-
         }
-            
     }
 }

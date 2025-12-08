@@ -1717,20 +1717,121 @@ MonoBehaviour:
   grenadeObj: {fileID: 2514291185019521657, guid: 3b1b0b0a7d0c0f04596a82d033e6147c, type: 3}
   followCamera: {fileID: 330585545}
   manager: {fileID: 1073140048}
-  jumpSound: {fileID: 0}
   ammo: 100
   coin: 5500
-  health: 10
+  health: 100
   maxAmmo: 999
   maxCoin: 99999
   maxHealth: 100
   masHasGrenades: 4
   equipWeapon: {fileID: 0}
+  jumpClip: {fileID: 8300000, guid: b7d80c8449a5884459c3e64482d28808, type: 3}
+  dodgeClip: {fileID: 8300000, guid: 5353634faf4325440b0f0c8ddefb840c, type: 3}
+  hitClip: {fileID: 8300000, guid: 68890a40411e85c4094ce1528415f45d, type: 3}
+  weaponSwapClip: {fileID: 8300000, guid: e459565f560ecec40aa4a207ed4f1481, type: 3}
+  footstepClip: {fileID: 8300000, guid: 66b8e5d1e2332374cb741e5d65781a50, type: 3}
 --- !u!4 &249385776 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5903297864969995812, guid: 8f5e135a19626f544908fc8f156144b9, type: 3}
   m_PrefabInstance: {fileID: 862683010}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &249385777
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249385772}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.8
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &260229780 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1348174882345252545, guid: c2ec4bfd1a6491c49a0c34b8dc3a7639, type: 3}
@@ -1776,15 +1877,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   type: 0
   damage: 25
-  rate: 0.4
   maxAmmo: 0
   curAmmo: 0
+  rate: 0.4
   meleeArea: {fileID: 260229782}
   trailEffect: {fileID: 614083991}
   bulletPos: {fileID: 0}
   bullet: {fileID: 0}
-  bulletCasePos: {fileID: 0}
-  bulletCase: {fileID: 0}
+  fireSound: {fileID: 8300000, guid: bc74055805a9c874eb375a85b95eb509, type: 3}
 --- !u!1 &279701856
 GameObject:
   m_ObjectHideFlags: 0
@@ -1923,6 +2023,10 @@ PrefabInstance:
     - target: {fileID: 8064088025853186073, guid: 32c0661cc78ed1e4eb1b3858a3eb3270, type: 3}
       propertyPath: m_Name
       value: Enemy B
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064088025853186073, guid: 32c0661cc78ed1e4eb1b3858a3eb3270, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7768,6 +7872,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weapon Grenade (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5459117613230371523, guid: 9a6ae625eea0f2e44a3eeccc88c84d45, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7994,15 +8102,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   type: 1
   damage: 0
-  rate: 0.15
   maxAmmo: 30
   curAmmo: 30
+  rate: 0.15
   meleeArea: {fileID: 0}
   trailEffect: {fileID: 0}
   bulletPos: {fileID: 1428160178}
   bullet: {fileID: 7698082591233438248, guid: 39db08232d9eb964f9dd444a6ab039d2, type: 3}
-  bulletCasePos: {fileID: 190733800}
-  bulletCase: {fileID: 4150347148690045886, guid: 634469df1b2480b40b5403bec3142429, type: 3}
+  fireSound: {fileID: 8300000, guid: e71ecdb7850ee4d478713bfb542ef7b1, type: 3}
 --- !u!1001 &498675177
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9356,6 +9463,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5459117613230371523, guid: 9a6ae625eea0f2e44a3eeccc88c84d45, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6450849492095146948, guid: 9a6ae625eea0f2e44a3eeccc88c84d45, type: 3}
       propertyPath: m_Layer
       value: 0
@@ -9592,15 +9703,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   type: 1
   damage: 0
-  rate: 0.4
   maxAmmo: 7
   curAmmo: 7
+  rate: 0.4
   meleeArea: {fileID: 0}
   trailEffect: {fileID: 0}
   bulletPos: {fileID: 1428160178}
   bullet: {fileID: 7583347868892236551, guid: 2c88ba7b765945543b3f295762dc4461, type: 3}
-  bulletCasePos: {fileID: 361078037}
-  bulletCase: {fileID: 4150347148690045886, guid: 634469df1b2480b40b5403bec3142429, type: 3}
+  fireSound: {fileID: 8300000, guid: a6b825c612f4a5549938aa3345bdd60d, type: 3}
 --- !u!1 &711419940
 GameObject:
   m_ObjectHideFlags: 0
@@ -15523,6 +15633,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5461052779654786451, guid: 8f5e135a19626f544908fc8f156144b9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 249385775}
+    - targetCorrespondingSourceObject: {fileID: 5461052779654786451, guid: 8f5e135a19626f544908fc8f156144b9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 249385777}
     - targetCorrespondingSourceObject: {fileID: 3403024553794750845, guid: 8f5e135a19626f544908fc8f156144b9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1180525299}
@@ -15907,6 +16020,10 @@ PrefabInstance:
     - target: {fileID: 3086107511587597261, guid: a30844d5625084545a615552bec56f81, type: 3}
       propertyPath: m_Name
       value: Enemy A
+      objectReference: {fileID: 0}
+    - target: {fileID: 3086107511587597261, guid: a30844d5625084545a615552bec56f81, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4416654597520051198, guid: a30844d5625084545a615552bec56f81, type: 3}
       propertyPath: Target
@@ -34436,6 +34553,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy C
       objectReference: {fileID: 0}
+    - target: {fileID: 270227420130127572, guid: 6322c434268204b4098c613fc37c070d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2014518219465713109, guid: 6322c434268204b4098c613fc37c070d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.39106
@@ -45703,6 +45824,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weapon Grenade (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5459117613230371523, guid: 9a6ae625eea0f2e44a3eeccc88c84d45, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -45947,6 +46072,10 @@ PrefabInstance:
     - target: {fileID: 1232888306816154425, guid: c5f0347c9b513c04f90b19ee54a3d79f, type: 3}
       propertyPath: m_Name
       value: Enemy D
+      objectReference: {fileID: 0}
+    - target: {fileID: 1232888306816154425, guid: c5f0347c9b513c04f90b19ee54a3d79f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6473655762498375285, guid: c5f0347c9b513c04f90b19ee54a3d79f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -67025,6 +67154,10 @@ PrefabInstance:
       value: Weapon SubMachineGun
       objectReference: {fileID: 0}
     - target: {fileID: 4311678971864396137, guid: 959faeef11e88384e89e2d7c7a31c15c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311678971864396137, guid: 959faeef11e88384e89e2d7c7a31c15c, type: 3}
       propertyPath: m_TagString
       value: Weapon
       objectReference: {fileID: 0}
@@ -67084,6 +67217,10 @@ PrefabInstance:
     - target: {fileID: 4839608666788206326, guid: 511563bab9d7b2f42b31ec067f59355e, type: 3}
       propertyPath: m_Name
       value: Item Heart
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839608666788206326, guid: 511563bab9d7b2f42b31ec067f59355e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -67146,6 +67283,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weapon Grenade
       objectReference: {fileID: 0}
+    - target: {fileID: 5459117613230371523, guid: 9a6ae625eea0f2e44a3eeccc88c84d45, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -67206,6 +67347,10 @@ PrefabInstance:
     - target: {fileID: 7996719849983161684, guid: 35dc4d7bacc79e647b1bf9c7060541f8, type: 3}
       propertyPath: m_Name
       value: Weapon HandGun
+      objectReference: {fileID: 0}
+    - target: {fileID: 7996719849983161684, guid: 35dc4d7bacc79e647b1bf9c7060541f8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8369121986517086688, guid: 35dc4d7bacc79e647b1bf9c7060541f8, type: 3}
       propertyPath: m_Center.y
@@ -67287,6 +67432,10 @@ PrefabInstance:
     - target: {fileID: 216241102477326172, guid: 271a14d821e44e848893693c848a64a7, type: 3}
       propertyPath: m_Name
       value: Coin Silver
+      objectReference: {fileID: 0}
+    - target: {fileID: 216241102477326172, guid: 271a14d821e44e848893693c848a64a7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7811354086782825068, guid: 271a14d821e44e848893693c848a64a7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -67385,6 +67534,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Item Ammo
       objectReference: {fileID: 0}
+    - target: {fileID: 4931593444304903693, guid: 3f350c91bf031d4488b39b5da988b236, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8345733323011306089, guid: 3f350c91bf031d4488b39b5da988b236, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -67446,6 +67599,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin Bronze
       objectReference: {fileID: 0}
+    - target: {fileID: 7256509604492171139, guid: dd5d4babb719fd541beffe4ece013436, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -67462,6 +67619,10 @@ PrefabInstance:
     - target: {fileID: 5591991614624298143, guid: 9cafc6836337f9a43863226ab315daad, type: 3}
       propertyPath: m_Name
       value: Coin Gold
+      objectReference: {fileID: 0}
+    - target: {fileID: 5591991614624298143, guid: 9cafc6836337f9a43863226ab315daad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6862366896577182530, guid: 9cafc6836337f9a43863226ab315daad, type: 3}
       propertyPath: m_LocalPosition.x
@@ -67562,7 +67723,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2007088293974725021, guid: 49483928c3df0d44aa3aca2e3f26df57, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3326784535197088279, guid: 49483928c3df0d44aa3aca2e3f26df57, type: 3}
       propertyPath: m_Center.y
